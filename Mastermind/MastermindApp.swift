@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct MastermindApp: App {
+    let vm = MastermindViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                GameView()
+            }
+            .environmentObject(vm)
+            .navigationTitle("Mastermind")
         }
     }
 }
