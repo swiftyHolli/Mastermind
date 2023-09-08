@@ -20,6 +20,8 @@ struct MastermindModel {
     enum SignalColors {
         case black, white, empty
     }
+    let statisticsDataModel = StatisticDataModel()
+
     
     var numberOfPins: Int
     var numberOfColors: Int
@@ -32,32 +34,29 @@ struct MastermindModel {
     var repeatedColors = false
     var pickers = [CodePin:Bool]()
     var pickerVisible = false
+    
+    var statisticsPinNumber = 4
+    var statisticsColorNumber = 4
+    
+    var startDate: Date?
+
 
     init() {
         self.numberOfPins = 4
         self.maxTries = 8
         self.signalFields = [[SignalPin]]()
         self.tryFields = [CodeField]()
-        self.codeField = CodeField.newCodeField(numberOfPins: numberOfPins, numberOfColors: 4, fromTry: nil)
+        self.codeField = CodeField.newCodeField(numberOfPins: numberOfPins, numberOfColors: 4)
         self.nextTry = CodeField.emptyCodeField(numberOfPins: numberOfPins)
         self.numberOfColors = 4
-        newGame(level: 0)
+        newGame()
     }
     
-    mutating func newGame(level: Int) {
+    mutating func newGame() {
+        won = false
         signalFields.removeAll()
         tryFields.removeAll()
-        switch level {
-        case 0:
-            numberOfPins = 4
-        case 1:
-            numberOfPins = 5
-        case 2:
-            numberOfPins = 6
-        default:
-            numberOfPins = 4
-        }
-        self.codeField = CodeField.newCodeField(numberOfPins: numberOfPins, numberOfColors: numberOfColors, fromTry: nil)
+        self.codeField = CodeField.newCodeField(numberOfPins: numberOfPins, numberOfColors: numberOfColors)
         self.nextTry = CodeField.emptyCodeField(numberOfPins: numberOfPins)
         for codePin in self.nextTry.row {
             pickers[codePin] = false
@@ -89,23 +88,12 @@ struct MastermindModel {
         var id: UUID
         var row: [CodePin]
         
-        static func newCodeField(numberOfPins: Int, numberOfColors: Int, fromTry: CodeField?) -> CodeField {
+        static func newCodeField(numberOfPins: Int, numberOfColors: Int) -> CodeField {
             var newRow = [CodePin]()
-            if let lastTry = fromTry {
-                for index in 0..<numberOfPins {
-                    var colors = [PinColor]()
-                    for i in 0..<numberOfColors {
-                        colors.append(PinColor(rawValue: i) ?? .red)
-                    }
-                    
-                    newRow.append(CodePin(pinColor: lastTry.row[index].pinColor, id: UUID(), selection: lastTry.row[index].pinColor))
-                }
-            }
-            else {
+
                 for _ in 0..<numberOfPins {
                     newRow.append(CodePin.random(numberOfColors: numberOfColors, id: UUID()))
                 }
-            }
             return CodeField(id: UUID(), row: newRow)
         }
         static func emptyCodeField(numberOfPins: Int) -> CodeField {

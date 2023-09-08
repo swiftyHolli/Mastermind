@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct GameView: View {
-    @AppStorage("Level") private var level: SettingsViewModel.Level = .Beginner
     @AppStorage("Background") private var myBackground: SettingsViewModel.Background = .background1
+    @AppStorage("NumberOfPins") private var numberOfPins: Int = 4
+    @AppStorage("NumberOfColors") private var numberOfColors: Int = 4
 
     @EnvironmentObject var vm: MastermindViewModel
     @State var showingSettings = false
-    
+    @State var showingStatistics = false
+
+    @State var scalePin = 0.0
+        
     
     
     let gradient = LinearGradient(colors: [Color.orange,
@@ -22,11 +26,7 @@ struct GameView: View {
                                   endPoint: .bottom)
     var body: some View {
         NavigationStack {
-            ZStack {
-//                gradient
-//                    .opacity(0.25)
-//                    .ignoresSafeArea()
-                
+            ZStack {                
                 VStack {
                     HStack() {
                         ZStack {
@@ -62,21 +62,26 @@ struct GameView: View {
                         HStack {
                             ForEach($vm.model.nextTry.row) {$pin in
                                 GeometryReader { geometry in
-                                    CodePin(color: $pin.pinColor)
-                                        .onTapGesture {
-                                            withAnimation {
-                                                if !vm.model.pickerVisible {
-                                                    if vm.model.pickers[pin] == false {
-                                                        vm.model.pickers[pin] = true
-                                                        vm.model.pickerVisible = true
-                                                    }
-                                                    else {
-                                                        vm.model.pickers[pin] = false
-                                                        vm.model.pickerVisible = false
+                                    ZStack{
+                                        if pin.pinColor != .empty {
+                                            CodePin(color: .constant(MastermindModel.PinColor.empty))
+                                        }
+                                        CodePin(color: $pin.pinColor)
+                                            .onTapGesture {
+                                                withAnimation {
+                                                    if !vm.model.pickerVisible {
+                                                        if vm.model.pickers[pin] == false {
+                                                            vm.model.pickers[pin] = true
+                                                            vm.model.pickerVisible = true
+                                                        }
+                                                        else {
+                                                            vm.model.pickers[pin] = false
+                                                            vm.model.pickerVisible = false
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
+                                    }
                                     if vm.model.pickers[pin] == true {
                                         let width = geometry.size.width
                                         let height = geometry.size.height
@@ -100,14 +105,19 @@ struct GameView: View {
                 .frame(maxWidth: 600)
                 .navigationTitle("Mastermind")
                 .toolbar {
-                    settingsButton
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        statisticsButton
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        settingsButton
+                    }
                 }
             }.background {
                 Image("\(myBackground)")
                     .resizable()
-                    .edgesIgnoringSafeArea(.all)
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(contentMode: .fit)
                     .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
             }
             .preferredColorScheme(.dark)
         }
@@ -116,20 +126,50 @@ struct GameView: View {
     var checkButton: some View {
         Button {
             withAnimation {
-                vm.checkTry()
-                vm.hidePickers()
+                if vm.model.won {
+                    vm.model.newGame()
+                }
+                else {
+                    if vm.model.selectionComplete() {
+                        if vm.model.startDate == nil {
+                            vm.model.startDate = Date()
+                        }
+                    }
+                    vm.checkTry()
+                    vm.hidePickers()
+                    if vm.model.won {
+                        showingStatistics.toggle()
+                        vm.model.statisticsPinNumber = vm.model.numberOfPins
+                        vm.model.statisticsColorNumber = vm.model.statisticsColorNumber
+                        vm.model.statisticsDataModel.addGameResult(numberOfPins: Int16(vm.model.numberOfPins),
+                                                          numberOfColors: Int16(vm.model.numberOfColors),
+                                                          numberOfTries: Int16(vm.model.tryFields.count),
+                                                          startDate: vm.model.startDate ?? Date())
+                    }
+                }
             }
         } label: {
             VStack {
                 Image(systemName: "checkmark")
-                if vm.model.selectionComplete() {
-                    Text("Check")
+                if vm.model.won {
+                    Text("New")
                 }
                 else {
-                    Text("Fill")
+                    if vm.model.selectionComplete() {
+                        Text("Check")
+                    }
+                    else {
+                        Text("Fill")
+                    }
                 }
             }.padding()
-        }.disabled(vm.model.tryFields.isEmpty && !vm.model.selectionComplete())
+        }
+        .disabled((vm.model.tryFields.isEmpty && !vm.model.selectionComplete()))
+        .sheet(isPresented: $showingStatistics) {
+            StatisticsView()
+                .presentationDetents([.medium])
+                .presentationBackground(.thinMaterial)
+        }
     }
     
     var settingsButton: some View {
@@ -137,6 +177,21 @@ struct GameView: View {
             showingSettings.toggle()
         } label: {
             Image(systemName: "gear")
+                .font(.title2)
+                .fontWeight(.semibold)
+        }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
+        }
+    }
+    
+    var statisticsButton: some View {
+        Button {
+            showingStatistics.toggle()
+        } label: {
+            Image(systemName: "chart.bar.xaxis")
+                .font(.title2)
+                .fontWeight(.semibold)
         }
         .sheet(isPresented: $showingSettings) {
             SettingsView()
@@ -177,7 +232,13 @@ struct GameView: View {
                     .frame(height: 50)
                     .id(field.id)
                     .padding(.horizontal)
+                    .padding(.vertical, 5.0)
                 }
+                Rectangle()
+                    .stroke(lineWidth: 0)
+                    .frame(height: 20)
+                    .frame(maxWidth: .infinity)
+                    .id("Hallo")
             }
             .padding(.vertical, 5.0)
             .opacity(vm.model.pickerVisible ? 0.5 : 1)
@@ -185,7 +246,9 @@ struct GameView: View {
             //.scrollContentBackground(.hidden)
             .onChange(of: vm.model.tryFields.last?.id) { id in
                 withAnimation {
-                scrollReader.scrollTo(vm.model.tryFields.last?.id, anchor: .bottom)
+                    scrollReader.scrollTo("Hallo", anchor: .bottom)
+
+                //scrollReader.scrollTo(vm.model.tryFields.last?.id, anchor: .bottom)
                 }
             }
             .listStyle(.automatic)

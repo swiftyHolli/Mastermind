@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300C35472AAB2EA40024EA0F /* StatisticsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300C35462AAB2EA40024EA0F /* StatisticsSelectionView.swift */; };
+		300C35492AAB501F0024EA0F /* StatisticsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300C35482AAB501F0024EA0F /* StatisticsDataModel.swift */; };
 		3096620D2A9530720023B5D7 /* MastermindApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3096620C2A9530720023B5D7 /* MastermindApp.swift */; };
 		3096620F2A9530720023B5D7 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3096620E2A9530720023B5D7 /* GameView.swift */; };
 		309662112A9530740023B5D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309662102A9530740023B5D7 /* Assets.xcassets */; };
@@ -17,6 +19,8 @@
 		309662372A9531E10023B5D7 /* MastermindModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309662362A9531E10023B5D7 /* MastermindModel.swift */; };
 		309662392A953B320023B5D7 /* MastermindViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309662382A953B320023B5D7 /* MastermindViewModel.swift */; };
 		3096623B2A9B52190023B5D7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3096623A2A9B52190023B5D7 /* SettingsView.swift */; };
+		30DD07352AAA128900E49009 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DD07342AAA128900E49009 /* StatisticsView.swift */; };
+		30DD07382AAA16C400E49009 /* StatisticsContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 30DD07362AAA16C400E49009 /* StatisticsContainer.xcdatamodeld */; };
 		30F8B78D2A9D361D0034798D /* CodePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F8B78C2A9D361D0034798D /* CodePin.swift */; };
 		30F8B78F2A9DEB240034798D /* PinPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F8B78E2A9DEB240034798D /* PinPickerView.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		300C35462AAB2EA40024EA0F /* StatisticsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsSelectionView.swift; sourceTree = "<group>"; };
+		300C35482AAB501F0024EA0F /* StatisticsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsDataModel.swift; sourceTree = "<group>"; };
 		309662092A9530720023B5D7 /* Mastermind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mastermind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3096620C2A9530720023B5D7 /* MastermindApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastermindApp.swift; sourceTree = "<group>"; };
 		3096620E2A9530720023B5D7 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -52,6 +58,8 @@
 		309662362A9531E10023B5D7 /* MastermindModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastermindModel.swift; sourceTree = "<group>"; };
 		309662382A953B320023B5D7 /* MastermindViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastermindViewModel.swift; sourceTree = "<group>"; };
 		3096623A2A9B52190023B5D7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		30DD07342AAA128900E49009 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		30DD07372AAA16C400E49009 /* StatisticsContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StatisticsContainer.xcdatamodel; sourceTree = "<group>"; };
 		30F8B78C2A9D361D0034798D /* CodePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodePin.swift; sourceTree = "<group>"; };
 		30F8B78E2A9DEB240034798D /* PinPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				309662362A9531E10023B5D7 /* MastermindModel.swift */,
+				300C35482AAB501F0024EA0F /* StatisticsDataModel.swift */,
+				30DD07362AAA16C400E49009 /* StatisticsContainer.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -161,6 +171,8 @@
 				30F8B78C2A9D361D0034798D /* CodePin.swift */,
 				3096620E2A9530720023B5D7 /* GameView.swift */,
 				3096623A2A9B52190023B5D7 /* SettingsView.swift */,
+				30DD07342AAA128900E49009 /* StatisticsView.swift */,
+				300C35462AAB2EA40024EA0F /* StatisticsSelectionView.swift */,
 				30F8B78E2A9DEB240034798D /* PinPickerView.swift */,
 			);
 			path = Views;
@@ -298,9 +310,13 @@
 			files = (
 				30F8B78F2A9DEB240034798D /* PinPickerView.swift in Sources */,
 				3096623B2A9B52190023B5D7 /* SettingsView.swift in Sources */,
+				300C35472AAB2EA40024EA0F /* StatisticsSelectionView.swift in Sources */,
+				300C35492AAB501F0024EA0F /* StatisticsDataModel.swift in Sources */,
 				309662392A953B320023B5D7 /* MastermindViewModel.swift in Sources */,
 				30F8B78D2A9D361D0034798D /* CodePin.swift in Sources */,
 				309662372A9531E10023B5D7 /* MastermindModel.swift in Sources */,
+				30DD07382AAA16C400E49009 /* StatisticsContainer.xcdatamodeld in Sources */,
+				30DD07352AAA128900E49009 /* StatisticsView.swift in Sources */,
 				3096620F2A9530720023B5D7 /* GameView.swift in Sources */,
 				3096620D2A9530720023B5D7 /* MastermindApp.swift in Sources */,
 			);
@@ -627,6 +643,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		30DD07362AAA16C400E49009 /* StatisticsContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				30DD07372AAA16C400E49009 /* StatisticsContainer.xcdatamodel */,
+			);
+			currentVersion = 30DD07372AAA16C400E49009 /* StatisticsContainer.xcdatamodel */;
+			path = StatisticsContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 309662012A9530720023B5D7 /* Project object */;
 }
