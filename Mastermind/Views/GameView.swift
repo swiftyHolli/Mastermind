@@ -15,10 +15,6 @@ struct GameView: View {
     @EnvironmentObject var vm: MastermindViewModel
     @State var showingSettings = false
     @State var showingStatistics = false
-
-    @State var scalePin = 0.0
-        
-    
     
     let gradient = LinearGradient(colors: [Color.orange,
                                            Color.green],
@@ -26,18 +22,31 @@ struct GameView: View {
                                   endPoint: .bottom)
     var body: some View {
         NavigationStack {
-            ZStack {                
+            ZStack {
                 VStack {
                     HStack() {
                         ZStack {
                             HStack {
                                 ForEach($vm.model.codeField.row) {$pin in
-                                    CodePin(color: $pin.pinColor)
+                                    GeometryReader {geometry in
+                                        if !vm.model.won {
+                                            ZStack {
+                                                CodePin(color: .constant(.empty))
+                                                CodePin(color: $pin.pinColor)
+                                            }
+                                        }
+                                        else {
+                                            ZStack {
+                                                CodePin(color: .constant(.empty))
+                                                Text("?")
+                                                    .foregroundColor(.black)
+                                                    .font(.title)
+                                                    .fontWeight(.semibold)
+                                                    .position(x: geometry.size.width / 2 - 5, y: geometry.size.height / 2)
+                                            }
+                                        }
+                                    }
                                 }
-                            }
-                            if vm.model.won {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.brown)
                             }
                         }
                         

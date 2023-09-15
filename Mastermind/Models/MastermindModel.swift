@@ -156,7 +156,6 @@ struct MastermindModel {
             pickers[codePin] = false
         }
         pickerVisible = false
-
         if rightPlace == numberOfPins {
             won = true
         }
