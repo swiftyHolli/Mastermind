@@ -13,6 +13,8 @@ struct PinPickerView: View {
     @Binding var parent: MastermindModel.CodePin
     
     var backgroundColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 0.05266970199))
+    
+    @State var onAppearAnimation = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -32,10 +34,14 @@ struct PinPickerView: View {
             .background() {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.black.opacity(0.3))
+                    .frame(maxWidth: onAppearAnimation ? .infinity : 0, maxHeight: onAppearAnimation ? .infinity : 0)
                     .frame(width: geometry.size.width + 15, height: geometry.size.height + 10)
-                    //.background(.thinMaterial)
-                    //.offset(x:-3)
             }
+            .frame(maxWidth: onAppearAnimation ? .infinity : 0, maxHeight: onAppearAnimation ? .infinity : 0)
+            .onAppear {
+                onAppearAnimation = true
+            }
+            .animation(.easeInOut(duration: 0.5), value: onAppearAnimation)
         }
     }
 }

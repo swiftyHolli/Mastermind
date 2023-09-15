@@ -70,7 +70,7 @@ struct GameView: View {
                                         CodePin(color: $pin.pinColor, withQuestionMark: false)
                                             .onTapGesture {
                                                 withAnimation {
-                                                    if !vm.model.pickerVisible {
+                                                    if !vm.model.pickerVisible && !vm.model.won {
                                                         if vm.model.pickers[pin] == false {
                                                             vm.model.pickers[pin] = true
                                                             vm.model.pickerVisible = true
