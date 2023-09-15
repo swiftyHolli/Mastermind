@@ -11,10 +11,13 @@ struct GameView: View {
     @AppStorage("Background") private var myBackground: SettingsViewModel.Background = .background1
     @AppStorage("NumberOfPins") private var numberOfPins: Int = 4
     @AppStorage("NumberOfColors") private var numberOfColors: Int = 4
-
+    
     @EnvironmentObject var vm: MastermindViewModel
     @State var showingSettings = false
     @State var showingStatistics = false
+    
+    let wonAnimationDuration = 3.0
+    
     
     let gradient = LinearGradient(colors: [Color.orange,
                                            Color.green],
@@ -24,32 +27,21 @@ struct GameView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    HStack() {
+                    HStack {
                         ZStack {
                             HStack {
                                 ForEach($vm.model.codeField.row) {$pin in
-                                    GeometryReader {geometry in
-                                        if !vm.model.won {
-                                            ZStack {
-                                                CodePin(color: .constant(.empty))
-                                                CodePin(color: $pin.pinColor)
-                                            }
+                                    ZStack {
+                                        GeometryReader {geometry in
+                                            CodePin(color: .constant(.empty), withQuestionMark: true)
+                                            CodePin(color: $pin.pinColor, withQuestionMark: false)
+                                                .offset(x: 0, y: vm.model.won ? 0 : -200)
                                         }
-                                        else {
-                                            ZStack {
-                                                CodePin(color: .constant(.empty))
-                                                Text("?")
-                                                    .foregroundColor(.black)
-                                                    .font(.title)
-                                                    .fontWeight(.semibold)
-                                                    .position(x: geometry.size.width / 2 - 5, y: geometry.size.height / 2)
-                                            }
-                                        }
+                                        .animation(.easeInOut(duration: wonAnimationDuration), value: vm.model.won)
                                     }
                                 }
                             }
                         }
-                        
                         Divider()
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -73,9 +65,9 @@ struct GameView: View {
                                 GeometryReader { geometry in
                                     ZStack{
                                         if pin.pinColor != .empty {
-                                            CodePin(color: .constant(MastermindModel.PinColor.empty))
+                                            CodePin(color: .constant(MastermindModel.PinColor.empty), withQuestionMark: false)
                                         }
-                                        CodePin(color: $pin.pinColor)
+                                        CodePin(color: $pin.pinColor, withQuestionMark: false)
                                             .onTapGesture {
                                                 withAnimation {
                                                     if !vm.model.pickerVisible {
@@ -110,6 +102,7 @@ struct GameView: View {
                     }
                     .frame(maxHeight: 50)
                     .padding([.leading, .bottom, .trailing])
+                    cheatView
                 }
                 .frame(maxWidth: 600)
                 .navigationTitle("Mastermind")
@@ -134,7 +127,7 @@ struct GameView: View {
     
     var checkButton: some View {
         Button {
-            withAnimation {
+            //withAnimation {
                 if vm.model.won {
                     vm.model.newGame()
                 }
@@ -147,16 +140,16 @@ struct GameView: View {
                     vm.checkTry()
                     vm.hidePickers()
                     if vm.model.won {
-                        showingStatistics.toggle()
+                        Task {await delayStatistics()}
                         vm.model.statisticsPinNumber = vm.model.numberOfPins
                         vm.model.statisticsColorNumber = vm.model.statisticsColorNumber
                         vm.model.statisticsDataModel.addGameResult(numberOfPins: Int16(vm.model.numberOfPins),
-                                                          numberOfColors: Int16(vm.model.numberOfColors),
-                                                          numberOfTries: Int16(vm.model.tryFields.count),
-                                                          startDate: vm.model.startDate ?? Date())
+                                                                   numberOfColors: Int16(vm.model.numberOfColors),
+                                                                   numberOfTries: Int16(vm.model.tryFields.count),
+                                                                   startDate: vm.model.startDate ?? Date())
                     }
                 }
-            }
+            //}
         } label: {
             VStack {
                 Image(systemName: "checkmark")
@@ -213,7 +206,7 @@ struct GameView: View {
                 ForEach(Array(vm.model.tryFields.enumerated()), id: \.1) { index, field in
                     HStack(alignment: .center) {
                         ForEach($vm.model.tryFields[index].row) { pin in
-                            CodePin(color: pin.pinColor)
+                            CodePin(color: pin.pinColor, withQuestionMark: false)
                         }
                         Divider()
                         if vm.model.numberOfPins > 4 {
@@ -256,13 +249,29 @@ struct GameView: View {
             .onChange(of: vm.model.tryFields.last?.id) { id in
                 withAnimation {
                     scrollReader.scrollTo("Hallo", anchor: .bottom)
-
-                //scrollReader.scrollTo(vm.model.tryFields.last?.id, anchor: .bottom)
+                    
+                    //scrollReader.scrollTo(vm.model.tryFields.last?.id, anchor: .bottom)
                 }
             }
             .listStyle(.automatic)
         }
     }
+    
+    var cheatView: some View {
+        HStack {
+            ForEach($vm.model.codeField.row) {$pin in
+                CodePin(color: $pin.pinColor, withQuestionMark: false)
+                    .frame(width: 10, height: 10)
+            }
+        }
+        
+    }
+    private func delayStatistics() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        try? await Task.sleep(nanoseconds: UInt64(wonAnimationDuration) * 1_000_000_000)
+        showingStatistics.toggle()
+    }
+
 }
 
 struct SignalPin: View {
@@ -286,9 +295,9 @@ struct SignalPin: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-            GameView()
-        .environmentObject(MastermindViewModel())
-        .navigationTitle("Mastermind")
+        GameView()
+            .environmentObject(MastermindViewModel())
+            .navigationTitle("Mastermind")
     }
 }
 

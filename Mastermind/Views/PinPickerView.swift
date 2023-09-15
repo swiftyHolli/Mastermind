@@ -18,7 +18,7 @@ struct PinPickerView: View {
         GeometryReader { geometry in
             VStack(spacing: 8) {
                 ForEach (0..<vm.model.numberOfColors, id: \.self) {index in
-                    CodePin(color: .constant(MastermindModel.PinColor(rawValue: index) ?? .red))
+                    CodePin(color: .constant(MastermindModel.PinColor(rawValue: index) ?? .red), withQuestionMark: false)
                         .onTapGesture {
                             withAnimation() {
                                 parent.pinColor = MastermindModel.PinColor(rawValue: index) ?? .red

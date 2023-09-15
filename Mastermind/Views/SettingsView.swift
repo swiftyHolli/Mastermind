@@ -108,7 +108,7 @@ struct SettingsView: View {
                     } label: {
                         HStack(alignment: .center) {
                             ForEach (0..<settingsModel.level + 4, id: \.self) {id in
-                                CodePin(color: .constant(.empty))
+                                CodePin(color: .constant(.empty), withQuestionMark: false)
                                     .frame(maxWidth: 30)
                             }
                             Spacer()
@@ -174,10 +174,10 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 HStack(alignment: .center, spacing: -15) {
-                    CodePin(color: .constant(.red))
-                    CodePin(color: .constant(.yellow))
-                    CodePin(color: .constant(.green))
-                    CodePin(color: .constant(.blue))
+                    CodePin(color: .constant(.red), withQuestionMark: false)
+                    CodePin(color: .constant(.yellow), withQuestionMark: false)
+                    CodePin(color: .constant(.green), withQuestionMark: false)
+                    CodePin(color: .constant(.blue), withQuestionMark: false)
                 }.frame(width: 70, height: 30, alignment: .center)
                     .padding([.leading, .bottom, .trailing])
             }
@@ -209,12 +209,12 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 HStack(alignment: .center, spacing: -15) {
-                    CodePin(color: .constant(.red))
-                    CodePin(color: .constant(.yellow))
-                    CodePin(color: .constant(.green))
-                    CodePin(color: .constant(.blue))
-                    CodePin(color: .constant(.orange))
-                    CodePin(color: .constant(.brown))
+                    CodePin(color: .constant(.red), withQuestionMark: false)
+                    CodePin(color: .constant(.yellow), withQuestionMark: false)
+                    CodePin(color: .constant(.green), withQuestionMark: false)
+                    CodePin(color: .constant(.blue), withQuestionMark: false)
+                    CodePin(color: .constant(.orange), withQuestionMark: false)
+                    CodePin(color: .constant(.brown), withQuestionMark: false)
                 }.frame(width: 70, height: 30, alignment: .center)
                     .padding([.leading, .bottom, .trailing])
             }
@@ -246,15 +246,14 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 HStack(alignment: .center, spacing: -15) {
-                    CodePin(color: .constant(.red)
-                    )
-                    CodePin(color: .constant(.yellow))
-                    CodePin(color: .constant(.green))
-                    CodePin(color: .constant(.blue))
-                    CodePin(color: .constant(.orange))
-                    CodePin(color: .constant(.brown))
-                    CodePin(color: .constant(.purple))
-                    CodePin(color: .constant(.pink))
+                    CodePin(color: .constant(.red), withQuestionMark: false)
+                    CodePin(color: .constant(.yellow), withQuestionMark: false)
+                    CodePin(color: .constant(.green), withQuestionMark: false)
+                    CodePin(color: .constant(.blue), withQuestionMark: false)
+                    CodePin(color: .constant(.orange), withQuestionMark: false)
+                    CodePin(color: .constant(.brown), withQuestionMark: false)
+                    CodePin(color: .constant(.purple), withQuestionMark: false)
+                    CodePin(color: .constant(.pink), withQuestionMark: false)
                 }.frame(width: 70, height: 30, alignment: .center)
                     .padding([.leading, .bottom, .trailing])
             }
@@ -286,10 +285,10 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 HStack(alignment: .center, spacing: -15) {
-                    CodePin(color: .constant(.red))
-                    CodePin(color: .constant(.blue))
-                    CodePin(color: .constant(.blue))
-                    CodePin(color: .constant(.red))
+                    CodePin(color: .constant(.red), withQuestionMark: false)
+                    CodePin(color: .constant(.blue), withQuestionMark: false)
+                    CodePin(color: .constant(.blue), withQuestionMark: false)
+                    CodePin(color: .constant(.red), withQuestionMark: false)
                 }.frame(width: 100, height: 30, alignment: .center)
                     .padding([.leading, .bottom, .trailing])
             }

@@ -12,6 +12,8 @@ struct CodePin: View {
     
     @Binding var color: MastermindModel.PinColor
     
+    var withQuestionMark: Bool
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .center) {
@@ -59,6 +61,12 @@ struct CodePin: View {
                         .shadow(color: Color.black.opacity(0.1), radius: r, x: x, y: y)
                         //.shadow(color: Color.black.opacity(0.5), radius: r, x: x, y: y)
                 }
+                if withQuestionMark {
+                    Text("?")
+                        .foregroundColor(.black)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                }
             }
         }
     }
@@ -66,7 +74,7 @@ struct CodePin: View {
 
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
-        CodePin(color: .constant(.empty))
+        CodePin(color: .constant(.empty), withQuestionMark: true)
             .frame(width: 70, height: 70)
             .environmentObject(MastermindViewModel())
     }
